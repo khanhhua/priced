@@ -1,17 +1,33 @@
-from tornado.web import (RequestHandler,
+import sys
+from os.path import (join,
+                     dirname,
+                     realpath)
+from tornado.web import (StaticFileHandler,
                          Application,
                          url
                          )
 
-class MainHandler(RequestHandler):
+base_path = dirname(__file__)
+sys.path.insert(0, base_path)
 
-    def get(self):
-        self.write("Hello, world")
+static_path   = realpath(join(base_path, "static", "assets"))
+template_path = realpath(join(base_path, "template"))
 
-urls = [url(r"/app", MainHandler),
-        url(r"/", MainHandler)]
+print("template_path: %s" % template_path)
+print("static_path: %s" % static_path)
 
-application = Application(urls)
+from app import webhandlers
+urls = [url(r"/", webhandlers.PageHandler),
+        url(r"/admin", webhandlers.PageHandler, {"file_path": "admin/index.html"}),
+        url(r"/api/products", webhandlers.ProductsHandler)
+        ]
+
+config = dict(static_url_prefix="/assets/",
+              static_path=static_path,
+              template_path=template_path,
+              debug=True,
+              autoreload=True)
+application = Application(urls, **config)
 
 if __name__ == "__main__":
     application.listen(8888)

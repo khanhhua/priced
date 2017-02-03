@@ -1,4 +1,5 @@
 from tornado.web import RequestHandler
+from tornado.template import Loader
 
 
 class InquiryHandler(RequestHandler):
@@ -40,3 +41,22 @@ class UsersHandler(RequestHandler):
 
     def get(self):
         self.write("Hello Users")
+
+
+class PageHandler(RequestHandler):
+
+    def __init__(self, application, request, file_path):
+        super(PageHandler, self).__init__(application, request)
+
+        self.file_path = file_path
+
+    def get(self, matched_part=None):
+        if self.file_path:
+            self.render(self.file_path)
+            return
+
+        if matched_part is None:
+            self.render("public/index.html")
+        else:
+            template_name = matched_part + ".html"
+            self.render(template_name)
