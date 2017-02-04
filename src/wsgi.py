@@ -18,9 +18,10 @@ print("static_path: %s" % static_path)
 
 from app import webhandlers
 urls = [url(r"/", webhandlers.PageHandler),
-        url(r"/admin", webhandlers.PageHandler, {"file_path": "admin/index.html"}),
-        url(r"/api/products", webhandlers.ProductsHandler)
+        url(r"/admin(/.*)?", webhandlers.PageHandler, {"template_name": "admin/index"}),
+        url(r"/api/products/(.+)?", webhandlers.ProductsHandler)
         ]
+# url(r"/api/products/(?P<product_id>)")
 
 config = dict(static_url_prefix="/assets/",
               static_path=static_path,

@@ -93,28 +93,31 @@
   function getAppModule() {
     console.log('Making a bare-bones, default AppModule');
 
-    return Promise.all([
-      System.import('@angular/core'),
-      System.import('@angular/platform-browser'),
-      System.import('app/app.component')
-    ])
-    .then(function (imports) {
-
-      var core    = imports[0];
-      var browser = imports[1];
-      var appComp = imports[2].AppComponent;
-
-      var AppModule = function() {}
-
-      AppModule.annotations = [
-        new core.NgModule({
-          imports:      [ browser.BrowserModule ],
-          declarations: [ appComp ],
-          bootstrap:    [ appComp ]
-        })
-      ]
-      return {AppModule: AppModule};
-    })
+    return System.import('app/app.module');
+    //return Promise.all([
+    //  System.import('@angular/core'),
+    //  System.import('@angular/platform-browser'),
+    //  System.import('app/app.component'),
+    //  System.import('app/app-routing.module')
+    //])
+    //.then(function (imports) {
+    //
+    //  var core    = imports[0];
+    //  var browser = imports[1];
+    //  var appComp = imports[2].AppComponent;
+    //  var appRouting = imports[3].AppRoutingModule;
+    //
+    //  var AppModule = function() {}
+    //
+    //  AppModule.annotations = [
+    //    new core.NgModule({
+    //      imports:      [ browser.BrowserModule, appRouting ],
+    //      declarations: [ appComp ],
+    //      bootstrap:    [ appComp ]
+    //    })
+    //  ]
+    //  return {AppModule: AppModule};
+    //})
   }
 })(this);
 

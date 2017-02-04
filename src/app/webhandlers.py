@@ -1,3 +1,5 @@
+import json
+
 from tornado.web import RequestHandler
 from tornado.template import Loader
 
@@ -15,8 +17,15 @@ class AuthHandler(RequestHandler):
 
 class ProductsHandler(RequestHandler):
 
-    def get(self):
-        self.write("Hello Products")
+    def get(self, product_id=None):
+        self.set_header("Content-Type", "application/json")
+
+        product = dict(id="ID001",
+                       name="Applie")
+        if product_id:
+            self.write(json.dumps(dict(product=product)))
+        else:
+            self.write(json.dumps(dict(products=[product])))
 
 
 class UnitsHandler(RequestHandler):
@@ -45,14 +54,15 @@ class UsersHandler(RequestHandler):
 
 class PageHandler(RequestHandler):
 
-    def __init__(self, application, request, file_path):
+    def __init__(self, application, request, template_name):
         super(PageHandler, self).__init__(application, request)
-
-        self.file_path = file_path
+        if template_name[-5:] is not ".html":
+            template_name += ".html"
+        self.template_name = template_name
 
     def get(self, matched_part=None):
-        if self.file_path:
-            self.render(self.file_path)
+        if self.template_name:
+            self.render(self.template_name)
             return
 
         if matched_part is None:
