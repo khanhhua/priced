@@ -1,0 +1,46 @@
+<div class="page-header">
+  <h1>Settings</h1>
+</div>
+
+<div class="row">
+  <div class="col-sm-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <a class="btn btn-default btn-xs pull-right" (click)="createUnit()">Add new</a>
+        <h3 class="panel-title">Units</h3>
+      </div>
+      <div class="list-group">
+        <div class="list-group-item" *ngFor="let unit of units">
+          {{unit.name}}
+          <span class="pull-right">
+            <a (click)="viewUnit(unit.id)">View</a>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Integration</h3>
+      </div>
+      <div class="panel-body">
+        <div class="form form-horizontal">
+          <div class="form-group">
+            <div class="control-label col-xs-12 col-sm-2">Client Key</div>
+            <div class="col-xs-12 col-sm-10">
+              <span class="form-control">{{clientIntegration.clientKey}}</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="control-label col-xs-12 col-sm-2">Access Code</div>
+            <div class="col-xs-12 col-sm-10">
+              <span class="form-control">{{clientIntegration.accessCode}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<priced-create-unit #createUnitModal></priced-create-unit>
