@@ -1,5 +1,5 @@
 <div class="page-header">
-  <h1>Product List</h1>
+  <h1>Taxcode List</h1>
 </div>
 
 <div class="row">
@@ -7,15 +7,15 @@
     <table class="table">
       <thead>
       <tr>
-        <th>Name</th>
+        <th>Title</th>
         <th>Actions</th>
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let product of products">
-        <td>{{product.name}}</td>
+      <tr *ngFor="let taxcode of taxcodes">
+        <td>{{taxcode.title}}</td>
         <td>
-          <a [routerLink]="['/products', {id: product.id}]">View</a>
+          <a [routerLink]="['/taxcodes', taxcode.id]">View</a>
         </td>
       </tr>
       </tbody>

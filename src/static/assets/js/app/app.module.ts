@@ -9,9 +9,11 @@ import { AppRoutingModule } from './app-routing.module';
 //import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
 //import { InMemoryDataService }  from './in-memory-data.service';
 
-import { AppComponent }         from './app.component';
-import { ProductListComponent }          from './product-list.component';
-import { ProductDetailComponent }  from './product-detail.component';
+import { AppComponent } from './app.component';
+import { ProductListComponent } from './product-list-component/index';
+import { ProductDetailComponent } from './product-detail-component/index';
+import { TaxcodeListComponent } from './taxcode-list-component/index';
+import { TaxcodeDetailComponent } from './taxcode-detail-component/index';
 
 @NgModule({
   imports: [
@@ -24,7 +26,9 @@ import { ProductDetailComponent }  from './product-detail.component';
   declarations: [
     AppComponent,
     ProductListComponent,
-    ProductDetailComponent
+    ProductDetailComponent,
+    TaxcodeListComponent,
+    TaxcodeDetailComponent
   ],
   //providers: [ HeroService ],
   bootstrap: [ AppComponent ]

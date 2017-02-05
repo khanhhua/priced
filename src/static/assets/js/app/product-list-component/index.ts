@@ -11,8 +11,8 @@ import { Product } from "./models";
 @Component({
   moduleId: module.id,
   selector: 'priced-product-list',
-  templateUrl: './product-list.component.html',
-  styleUrls: [ './product-list.component.css' ]
+  templateUrl: './template.html',
+  styleUrls: [ './style.css' ]
 })
 export class ProductListComponent implements OnInit {
   products = [];

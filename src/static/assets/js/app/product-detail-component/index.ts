@@ -11,8 +11,8 @@ import { Product } from './models';
 @Component({
   moduleId: module.id,
   selector: 'priced-product-detail',
-  templateUrl: './product-detail.component.html',
-  styleUrls: [ './product-detail.component.css' ]
+  templateUrl: './template.html',
+  styleUrls: [ './style.css' ]
 })
 export class ProductDetailComponent implements OnInit {
   product: Product = {} as Product;
@@ -31,9 +31,9 @@ export class ProductDetailComponent implements OnInit {
       this.http.get(`/api/products/${productId}`)
           .map(res => {
             const data = res.json();
-            return data.product;
+            return data.product as Product;
           })
-          .subscribe(product => this.product = product as Product);
+          .subscribe(product => this.product = product);
     });
 
   }

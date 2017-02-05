@@ -78,7 +78,7 @@
     // bootstrap and launch the app (equivalent to standard main.ts)
     Promise.all([
       System.import('@angular/platform-browser-dynamic'),
-      getAppModule()
+      System.import('app/app.module')
     ])
     .then(function (imports) {
       var platform = imports[0];

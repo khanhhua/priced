@@ -15,11 +15,17 @@ class AuthHandler(RequestHandler):
         self.write("Hello, world")
 
 
-class ProductsHandler(RequestHandler):
+class RestHandler(RequestHandler):
 
-    def get(self, product_id=None):
+    def __init__(self, applicationn, request, **settings):
+        super(RestHandler, self).__init__(applicationn, request, **settings)
+
         self.set_header("Content-Type", "application/json")
 
+
+class ProductsHandler(RestHandler):
+
+    def get(self, product_id=None):
         product = dict(id="ID001",
                        name="Applie")
         if product_id:
@@ -34,10 +40,15 @@ class UnitsHandler(RequestHandler):
         self.write("Hello Units")
 
 
-class TaxCodesHandler(RequestHandler):
+class TaxCodesHandler(RestHandler):
 
-    def get(self):
-        self.write("Hello Tax Codes")
+    def get(self, taxcode_id):
+        taxcode = dict(id="ID001",
+                       title="Applie")
+        if taxcode_id:
+            self.write(json.dumps(dict(taxcode=taxcode)))
+        else:
+            self.write(json.dumps(dict(taxcodes=[taxcode])))
 
 
 class ClientsHandler(RequestHandler):

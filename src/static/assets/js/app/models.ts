@@ -15,13 +15,14 @@ export class Unit {
   name: string;
 }
 
-export class TaxCode {
+export class Taxcode {
   id: string;
   created_at: Date;
   effected_on: Date;
   expired_on: Date;
 
   shared: boolean;
+  title: string;
   body: string;
 }
 
