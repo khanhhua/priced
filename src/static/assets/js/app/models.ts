@@ -13,6 +13,7 @@ export class Service {
 export class Unit {
   id: string;
   name: string;
+  shortForm: string;
 }
 
 export class Taxcode {

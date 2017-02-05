@@ -36,13 +36,18 @@ class ProductsHandler(RestHandler):
 
 class UnitsHandler(RequestHandler):
 
-    def get(self):
-        self.write("Hello Units")
+    def get(self, unit_id=None):
+        unit = dict(id="ID001",
+                    name="Kilogram")
+        if unit_id:
+            self.write(json.dumps(dict(unit=unit)))
+        else:
+            self.write(json.dumps(dict(units=[unit])))
 
 
 class TaxCodesHandler(RestHandler):
 
-    def get(self, taxcode_id):
+    def get(self, taxcode_id=None):
         taxcode = dict(id="ID001",
                        title="Applie")
         if taxcode_id:
@@ -65,9 +70,9 @@ class UsersHandler(RequestHandler):
 
 class PageHandler(RequestHandler):
 
-    def __init__(self, application, request, template_name):
+    def __init__(self, application, request, template_name=None):
         super(PageHandler, self).__init__(application, request)
-        if template_name[-5:] is not ".html":
+        if template_name and template_name[-5:] is not ".html":
             template_name += ".html"
         self.template_name = template_name
 

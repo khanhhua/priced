@@ -5,6 +5,7 @@ import { HttpModule }    from '@angular/http';
 
 import { AppRoutingModule } from './app-routing.module';
 
+import { AlertModule, ModalModule } from 'ng2-bootstrap/ng2-bootstrap';
 // Imports for loading & configuring the in-memory web api
 //import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
 //import { InMemoryDataService }  from './in-memory-data.service';
@@ -14,6 +15,8 @@ import { ProductListComponent } from './product-list-component/index';
 import { ProductDetailComponent } from './product-detail-component/index';
 import { TaxcodeListComponent } from './taxcode-list-component/index';
 import { TaxcodeDetailComponent } from './taxcode-detail-component/index';
+import { ClientSettingsComponent } from './client-settings-component/index';
+import { CreateUnitComponent } from './create-unit-component/index';
 
 @NgModule({
   imports: [
@@ -21,6 +24,8 @@ import { TaxcodeDetailComponent } from './taxcode-detail-component/index';
     FormsModule,
     HttpModule,
     //InMemoryWebApiModule.forRoot(InMemoryDataService),
+    ModalModule,
+    AlertModule,
     AppRoutingModule
   ],
   declarations: [
@@ -28,7 +33,9 @@ import { TaxcodeDetailComponent } from './taxcode-detail-component/index';
     ProductListComponent,
     ProductDetailComponent,
     TaxcodeListComponent,
-    TaxcodeDetailComponent
+    TaxcodeDetailComponent,
+    ClientSettingsComponent,
+    CreateUnitComponent
   ],
   //providers: [ HeroService ],
   bootstrap: [ AppComponent ]

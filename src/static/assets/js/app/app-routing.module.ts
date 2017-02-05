@@ -5,6 +5,7 @@ import { ProductListComponent } from './product-list-component/index';
 import { ProductDetailComponent } from './product-detail-component/index';
 import { TaxcodeListComponent } from './taxcode-list-component/index';
 import { TaxcodeDetailComponent } from './taxcode-detail-component/index';
+import { ClientSettingsComponent } from './client-settings-component/index';
 
 const routes: Routes = [
   //{ path: '', redirectTo: '/dashboard', pathMatch: 'full' },
@@ -13,7 +14,8 @@ const routes: Routes = [
   { path: 'products', component: ProductListComponent },
   { path: 'products/:id', component: ProductDetailComponent },
   { path: 'taxcodes', component: TaxcodeListComponent },
-  { path: 'taxcodes/:id', component: TaxcodeDetailComponent }
+  { path: 'taxcodes/:id', component: TaxcodeDetailComponent },
+  { path: 'settings', component: ClientSettingsComponent }
 ];
 
 @NgModule({

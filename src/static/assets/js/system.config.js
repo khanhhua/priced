@@ -50,7 +50,8 @@
       'angular-in-memory-web-api': 'npm:angular-in-memory-web-api/bundles/in-memory-web-api.umd.js',
       'ts':                        'npm:plugin-typescript@4.0.10/lib/plugin.js',
       'typescript':                'npm:typescript@2.0.3/lib/typescript.js',
-
+      //'ng2-bootstrap/ng2-bootstrap': 'npm:ng2-bootstrap@1.1.5/ng2-bootstrap.js',
+      'moment': 'npm:moment/moment.js'
     },
     // packages tells the System loader how to load when no filename and/or no extension
     packages: {
@@ -59,6 +60,9 @@
         defaultExtension: 'ts'
       },
       rxjs: {
+        defaultExtension: 'js'
+      },
+      'ng2-bootstrap/ng2-bootstrap': {
         defaultExtension: 'js'
       }
     }
@@ -85,7 +89,10 @@
       var app      = imports[1];
       platform.platformBrowserDynamic().bootstrapModule(app.AppModule);
     })
-    .catch(function(err){ console.error(err); });
+    .catch(function(err){
+      debugger;
+      console.error(err);
+    });
   }
 
   // Make the default AppModule

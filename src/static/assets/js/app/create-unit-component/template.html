@@ -1,0 +1,34 @@
+<div bsModal #childModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-default">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">Create Unit</h4>
+        <!--<button type="button" class="close pull-right" aria-label="Close" (click)="hideChildModal()">-->
+          <!--<span aria-hidden="true">&times;</span>-->
+        <!--</button>-->
+      </div>
+      <div class="modal-body">
+        <div class="form form-horizontal">
+          <div class="form-group">
+            <label class="control-label col-xs-12 col-sm-3">Name</label>
+            <div class="col-xs-12 col-sm-9">
+              <input type="text" class="form-control" [(ngModel)]="name">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-xs-12 col-sm-3">Short form</label>
+            <div class="col-xs-12 col-sm-9">
+              <input type="text" class="form-control" [(ngModel)]="shortForm">
+            </div>
+          </div>
+
+          <div class="form-group text-center">
+            <button class="btn btn-default" (click)="onCancel()">Cancel</button>
+            <button class="btn btn-primary" (click)="onSave()">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
