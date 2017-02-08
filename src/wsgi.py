@@ -1,4 +1,4 @@
-import sys
+import sys, os
 from os.path import (join,
                      dirname,
                      realpath)
@@ -33,7 +33,7 @@ config = dict(static_url_prefix="/assets/",
 application = Application(urls, **config)
 
 if __name__ == "__main__":
-    application.listen(8888)
+    application.listen(os.getenv("PORT", 8080))
 
     import tornado.ioloop
     tornado.ioloop.IOLoop().current().start()
