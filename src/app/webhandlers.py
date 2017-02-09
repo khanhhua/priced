@@ -46,7 +46,7 @@ class UnitsHandler(RequestHandler):
 
 class TaxCodesHandler(RestHandler):
 
-    def get(self, taxcode_id=None):
+    def get(self, taxcode_id):
         taxcode_body = """EACH item
             TAX item
         """
