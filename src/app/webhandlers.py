@@ -1,7 +1,6 @@
 import json
 
 from tornado.web import RequestHandler
-from tornado.template import Loader
 
 
 class InquiryHandler(RequestHandler):
@@ -48,12 +47,67 @@ class UnitsHandler(RequestHandler):
 class TaxCodesHandler(RestHandler):
 
     def get(self, taxcode_id=None):
+        taxcode_body = """EACH item
+            TAX item
+        """
+
         taxcode = dict(id="ID001",
-                       title="Applie")
+                       created_at="2017-01-01T06:00:00Z",
+                       effective_at="2017-01-01T06:00:00Z",
+                       expired_at="2017-01-31T06:00:00Z",
+                       title="Apple",
+                       shared=True,
+                       body=taxcode_body)
         if taxcode_id:
             self.write(json.dumps(dict(taxcode=taxcode)))
         else:
             self.write(json.dumps(dict(taxcodes=[taxcode])))
+
+
+class ScenariosHandler(RestHandler):
+
+    def get(self, scenario_id=None):
+        description = """
+        Banana      1kg
+        Orange      2kg
+        Apple       4kg
+        ====
+        Shipping
+        """.strip()
+
+        scenario = dict(id="ID001",
+                        description=description)
+        if scenario_id:
+            self.write(json.dumps(dict(scenario=scenario)))
+        else:
+            self.write(json.dumps(dict(scenarios=[scenario])))
+
+
+class ScenarioSessionsHandler(RestHandler):
+
+    def post(self, *path_args, **kwargs):
+        body = self.request.body
+        data = json.loads(body.decode("utf8"))
+
+        self.write("\"ok\"")
+
+
+class TransactionsHandler(RestHandler):
+
+    def post(self, *path_args, **kwargs):
+        body = self.request.body
+        data = json.loads(body.decode("utf8"))
+
+        # Input data should contain
+        # 1. Lines of product purchased (quantity, unit)
+        # 2. Additional services
+        # 3. Dates of transaction
+        #
+        # Output data
+        # 1. Lines of product with quantity, price, unit
+        # 2. Total amount due with details about tax and price before tax
+
+        self.write("\"ok\"")
 
 
 class ClientsHandler(RequestHandler):
