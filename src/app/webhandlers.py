@@ -35,22 +35,26 @@ class RestHandler(RequestHandler):
 class ProductsHandler(RestHandler):
 
     def get(self, product_id=None):
-        product = dict(id="ID001",
-                       name="Applie")
         if product_id:
-            self.write(json.dumps(dict(product=product)))
+            product = self.db_session.query(models.Product).get(product_id)
+            
+            self.json(dict(product=product.to_dict()))
         else:
             productQuery = self.db_session.query(models.Product)
             
-            self.write(json.dumps(dict(products=[item.to_dict() for item in productQuery])))
+            self.json(dict(products=[item.to_dict() for item in productQuery]))
             
     def post(self, *path_args, **kwargs):
         try:
             data = json.loads(self.request.body.decode("utf8"))
             product = models.Product(**data)
             
-            self.json("ok")
+            self.db_session.add(product)
+            self.db_session.commit()
+            
+            self.json(dict(product=product.to_dict()))
         except Exception as e:
+            self.db_session.rollback()
             self.send_error(400, reason=str(e))
 
 
