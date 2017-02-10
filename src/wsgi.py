@@ -2,6 +2,10 @@ import sys, os
 from os.path import (join,
                      dirname,
                      realpath)
+
+from sqlalchemy import create_engine
+from sqlalchemy.orm.session import sessionmaker
+
 from tornado.web import (StaticFileHandler,
                          Application,
                          url
@@ -30,7 +34,29 @@ config = dict(static_url_prefix="/assets/",
               template_path=template_path,
               debug=True,
               autoreload=True)
-application = Application(urls, **config)
+              
+class App(Application):
+    
+    def __init__(self, urls, **kwargs):
+        super(App, self).__init__(urls, **kwargs)
+        self._db_session = None
+    
+    @property
+    def db_session(self):
+        if self._db_session:
+            return self._db_session
+        
+        DB_URL = os.getenv("DB_URL", None) or "postgresql://postgres:postgres@localhost/priced"
+        engine = create_engine(DB_URL, echo=True)
+        
+        session = sessionmaker()
+        session.configure(bind=engine)
+        
+        self._db_session = session()
+        return self._db_session
+
+        
+application = App(urls, **config)
 
 if __name__ == "__main__":
     application.listen(os.getenv("PORT", 8080))

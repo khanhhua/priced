@@ -3,6 +3,8 @@ import json
 from tornado.web import RequestHandler
 from tornado.template import Loader
 
+from app import models
+
 
 class InquiryHandler(RequestHandler):
 
@@ -21,6 +23,13 @@ class RestHandler(RequestHandler):
         super(RestHandler, self).__init__(applicationn, request, **settings)
 
         self.set_header("Content-Type", "application/json")
+        
+    @property
+    def db_session(self):
+        return self.application.db_session
+        
+    def json(self, response):
+        self.write(json.dumps(response))
 
 
 class ProductsHandler(RestHandler):
@@ -31,7 +40,18 @@ class ProductsHandler(RestHandler):
         if product_id:
             self.write(json.dumps(dict(product=product)))
         else:
-            self.write(json.dumps(dict(products=[product])))
+            productQuery = self.db_session.query(models.Product)
+            
+            self.write(json.dumps(dict(products=[item.to_dict() for item in productQuery])))
+            
+    def post(self, *path_args, **kwargs):
+        try:
+            data = json.loads(self.request.body.decode("utf8"))
+            product = models.Product(**data)
+            
+            self.json("ok")
+        except Exception as e:
+            self.send_error(400, reason=str(e))
 
 
 class UnitsHandler(RequestHandler):
