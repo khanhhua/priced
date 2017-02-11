@@ -52,6 +52,9 @@ class ProductsHandler(RestHandler):
     def post(self, *path_args, **kwargs):
         try:
             data = json.loads(self.request.body.decode("utf8"))
+            data['id'] = self.application.hashid()
+            data['kind'] = 'generic'
+
             product = models.Product(**data)
             
             self.db_session.add(product)

@@ -2,6 +2,17 @@ export class Product {
   id: string;
   name: string;
   kind: string;
+
+  pricings: [Price];
+}
+
+export class Price {
+  id: string;
+  effectiveAt: Date;
+  expiredDt: Date;
+  createdAt: Date;
+
+  value: number;
 }
 
 export class Service {

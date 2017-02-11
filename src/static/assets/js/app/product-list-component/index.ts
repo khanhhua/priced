@@ -4,8 +4,11 @@ import 'rxjs/add/operator/map';
 
 import { Http, Response } from '@angular/http';
 
-import { Component, OnInit } from '@angular/core';
-import { Router }            from '@angular/router';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
+
+import { ModalDirective } from 'ng2-bootstrap/ng2-bootstrap';
+
 import { Product } from "./models";
 
 @Component({
@@ -16,6 +19,9 @@ import { Product } from "./models";
 })
 export class ProductListComponent implements OnInit {
   products = [];
+  newProduct: Product;
+
+  @ViewChild('newProductModal') public newProductModal:ModalDirective;
 
   constructor (private http: Http) {}
 
@@ -32,7 +38,21 @@ export class ProductListComponent implements OnInit {
       });
   }
 
-  viewProduct(productId): void {
-    console.log(`[viewProduct] ${productId}`);
+  onShowNewProductModal(): void {
+    console.log(`[onShowNewProductModal]`);
+
+    this.newProduct = {} as Product;
+    this.newProductModal.show();
+  }
+
+  onSaveNewProduct(product): void {
+    const { name } = product;
+    this.http.post(`/api/products`, { name })
+      .map(res => res.json())
+      .subscribe(product => {
+        console.log(`[onSaveNewProduct]`, product)
+
+        this.newProductModal.hide();
+      })
   }
 }
