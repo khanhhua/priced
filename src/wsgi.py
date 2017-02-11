@@ -49,10 +49,9 @@ class App(Application):
         DB_URL = os.getenv("DB_URL", None) or "postgresql://postgres:postgres@localhost/priced"
         engine = create_engine(DB_URL, echo=True)
         
-        session = sessionmaker()
-        session.configure(bind=engine)
+        self._db_session = sessionmaker()
+        self._db_session.configure(bind=engine)
         
-        self._db_session = session()
         return self._db_session
 
         

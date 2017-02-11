@@ -21,12 +21,17 @@ class RestHandler(RequestHandler):
 
     def __init__(self, applicationn, request, **settings):
         super(RestHandler, self).__init__(applicationn, request, **settings)
-
+        
+        self._db_session = None
         self.set_header("Content-Type", "application/json")
         
     @property
     def db_session(self):
-        return self.application.db_session
+        if self._db_session:
+            return self._db_session
+        
+        self._db_session = self.application.db_session()
+        return self._db_session
         
     def json(self, response):
         self.write(json.dumps(response))
