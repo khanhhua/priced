@@ -1,13 +1,11 @@
-import os
+from datetime import datetime
 import json
 
-from sqlalchemy import create_engine
-from sqlalchemy import Column, Integer, String, DateTime, Boolean
-
-# DB_URL = os.getenv("DB_URL", None) or "postgresql://postgres:postgres@localhost/priced"
-# engine = create_engine(DB_URL, echo=True)
+from sqlalchemy import Column, Integer, String, CHAR, DateTime, Boolean, ForeignKey
+from sqlalchemy.orm import relationship
 
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Float
 Base = declarative_base()
 
 
@@ -22,7 +20,12 @@ class Serializable(object):
         """
         if "__serializable__" in self.__class__.__dict__:
             attrs = self.__class__.__dict__["__serializable__"]
-            ret = {name:getattr(self, name) for name in attrs}
+            ret = {}
+            for attr in attrs:
+                value = getattr(self, attr)
+                if type(value) is datetime:
+                    value = value.isoformat()
+                ret[attr] = value
             
             return ret
             
@@ -38,6 +41,24 @@ class Product(Serializable, Base):
     __tablename__ = "products"
     __serializable__ = ["id", "name", "kind"]
     
-    id = Column(String, primary_key=True)
+    id = Column(CHAR(16), primary_key=True)
     name = Column(String, nullable=False)
     kind = Column(String, nullable=False)
+
+    pricings = relationship("Price")
+
+
+class Price(Serializable, Base):
+
+    __tablename__ = "prices"
+    __serializable__ = ["id", "effective_at", "expired_at", "created_at", "value"]
+
+    id = Column(CHAR(16), primary_key=True)
+    product_id = Column(CHAR(16), ForeignKey("products.id"))
+    product = relationship("Product", back_populates="pricings")
+
+    effective_at = Column(DateTime, nullable=False)
+    expired_at = Column(DateTime, nullable=False)
+    created_at = Column(DateTime, nullable=False)
+
+    value = Column(Float, nullable=False)

@@ -22,7 +22,8 @@ print("static_path: %s" % static_path)
 from app import webhandlers
 urls = [url(r"/", webhandlers.PageHandler),
         url(r"/admin(/.*)?", webhandlers.PageHandler, {"template_name": "admin/index"}),
-        url(r"/api/products(?:/(.+))?", webhandlers.ProductsHandler),
+        url(r"/api/products/(\w+?)", webhandlers.ProductsHandler), # (?:/(.+))?
+        url(r"/api/products/(\w+?)/prices", webhandlers.ProductPricesHandler),
         url(r"/api/taxcodes(?:/(.+))?", webhandlers.TaxCodesHandler),
         url(r"/api/units(?:/(.+))?", webhandlers.UnitsHandler)
         ]

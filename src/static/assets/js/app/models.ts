@@ -9,10 +9,18 @@ export class Product {
 export class Price {
   id: string;
   effectiveAt: Date;
-  expiredDt: Date;
+  expiredAt: Date;
   createdAt: Date;
 
   value: number;
+
+  public static fromJSONArray(items) {
+    return items.map(item => {
+      const {id, effective_at:effectiveAt, expired_at:expiredAt, value} = item;
+
+      return {id, effectiveAt, expiredAt, value} as Price;
+    })
+  }
 }
 
 export class Service {

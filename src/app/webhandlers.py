@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 
 from tornado.web import RequestHandler
 from tornado.template import Loader
@@ -61,6 +62,38 @@ class ProductsHandler(RestHandler):
             self.db_session.commit()
             
             self.json(dict(product=product.to_dict()))
+        except Exception as e:
+            self.db_session.rollback()
+            self.send_error(400, reason=str(e))
+
+
+class ProductPricesHandler(RestHandler):
+
+    def get(self, product_id, price_id=None):
+        product = self.db_session.query(models.Product).get(product_id)
+
+        if price_id:
+            price_query = (self.db_session.query(models.Price)
+                          .filter(models.Price.id==price_id))
+            price = price_query.one()
+            self.json(dict(price=price.to_dict()))
+        else:
+            self.json(dict(prices=[item.to_dict() for item in product.pricings]))
+
+    def post(self, product_id, *path_args, **kwargs):
+        product = self.db_session.query(models.Product).get(product_id)
+
+        try:
+            data = json.loads(self.request.body.decode("utf8"))
+            data["id"] = self.application.hashid()
+            data["created_at"] = datetime.utcnow()
+            data["product"] = product
+
+            price = models.Price(**data)
+            self.db_session.add(price)
+            self.db_session.commit()
+
+            self.json(dict(price=price.to_dict()))
         except Exception as e:
             self.db_session.rollback()
             self.send_error(400, reason=str(e))
