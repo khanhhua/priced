@@ -17,6 +17,7 @@ import { TaxcodeListComponent } from './taxcode-list-component/index';
 import { TaxcodeDetailComponent } from './taxcode-detail-component/index';
 import { ClientSettingsComponent } from './client-settings-component/index';
 import { CreateUnitComponent } from './create-unit-component/index';
+import { ViewUnitComponent } from './view-unit-component/index';
 
 @NgModule({
   imports: [
@@ -35,7 +36,8 @@ import { CreateUnitComponent } from './create-unit-component/index';
     TaxcodeListComponent,
     TaxcodeDetailComponent,
     ClientSettingsComponent,
-    CreateUnitComponent
+    CreateUnitComponent,
+    ViewUnitComponent
   ],
   //providers: [ HeroService ],
   bootstrap: [ AppComponent ]

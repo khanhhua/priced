@@ -105,7 +105,7 @@ class UnitsHandler(RestHandler):
         if unit_id:
             unit = self.db_session.query(models.Unit).get(unit_id)
             
-            self.write(json.dumps(dict(unit=unit)))
+            self.write(json.dumps(dict(unit=unit.to_dict())))
         else:
             unit_query = self.db_session.query(models.Unit)
             
