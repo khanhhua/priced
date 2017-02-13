@@ -62,3 +62,14 @@ class Price(Serializable, Base):
     created_at = Column(DateTime, nullable=False)
 
     value = Column(Float, nullable=False)
+
+
+class Unit(Serializable, Base):
+    __tablename__ = "units"
+    __serializable__ = ["id", "name", "short_form"]
+    
+    id = Column(CHAR(16), primary_key=True)
+    name = Column(String, nullable=False)
+    short_form = Column(String, nullable=False)
+
+    created_at = Column(DateTime, nullable=False)

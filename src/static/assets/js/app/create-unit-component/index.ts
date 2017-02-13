@@ -3,7 +3,7 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
 import { Http, Response } from '@angular/http';
-import { Component, Input, ViewChild, OnInit } from '@angular/core';
+import { Component, Input, Output, ViewChild, OnInit, EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { ModalDirective } from 'ng2-bootstrap/ng2-bootstrap';
@@ -19,6 +19,8 @@ import { Unit } from '../models';
 export class CreateUnitComponent implements OnInit {
   @Input() name: string;
   @Input() shortForm: string;
+  
+  @Output() onUnitCreated: EventEmitter = new EventEmitter();
 
   unit: Unit = {} as Unit;
 
@@ -42,7 +44,19 @@ export class CreateUnitComponent implements OnInit {
 
     console.debug(`Unit name:`, this.unit);
     console.groupEnd();
-
-    this.childModal.hide();
+    
+    const { name, shortForm:short_form } = this.unit;
+    
+    this.http.post(`/api/units`, { name, short_form})
+        .map(res => {
+          const data = res.json();
+          
+          return data.unit as Unit;
+        })
+        .subscribe(unit => {
+          this.onUnitCreated.emit(unit);
+          
+          this.childModal.hide();
+        });
   }
 }
