@@ -1,7 +1,10 @@
 import json
+from datetime import datetime
 
 from tornado.web import RequestHandler
 from tornado.template import Loader
+
+from app import models
 
 
 class InquiryHandler(RequestHandler):
@@ -19,19 +22,81 @@ class RestHandler(RequestHandler):
 
     def __init__(self, applicationn, request, **settings):
         super(RestHandler, self).__init__(applicationn, request, **settings)
-
+        
+        self._db_session = None
         self.set_header("Content-Type", "application/json")
+        
+    @property
+    def db_session(self):
+        if self._db_session:
+            return self._db_session
+        
+        self._db_session = self.application.db_session()
+        return self._db_session
+        
+    def json(self, response):
+        self.write(json.dumps(response))
 
 
 class ProductsHandler(RestHandler):
 
     def get(self, product_id=None):
-        product = dict(id="ID001",
-                       name="Applie")
         if product_id:
-            self.write(json.dumps(dict(product=product)))
+            product = self.db_session.query(models.Product).get(product_id)
+            
+            self.json(dict(product=product.to_dict()))
         else:
-            self.write(json.dumps(dict(products=[product])))
+            productQuery = self.db_session.query(models.Product)
+            
+            self.json(dict(products=[item.to_dict() for item in productQuery]))
+            
+    def post(self, *path_args, **kwargs):
+        try:
+            data = json.loads(self.request.body.decode("utf8"))
+            data['id'] = self.application.hashid()
+            data['kind'] = 'generic'
+
+            product = models.Product(**data)
+            
+            self.db_session.add(product)
+            self.db_session.commit()
+            
+            self.json(dict(product=product.to_dict()))
+        except Exception as e:
+            self.db_session.rollback()
+            self.send_error(400, reason=str(e))
+
+
+class ProductPricesHandler(RestHandler):
+
+    def get(self, product_id, price_id=None):
+        product = self.db_session.query(models.Product).get(product_id)
+
+        if price_id:
+            price_query = (self.db_session.query(models.Price)
+                          .filter(models.Price.id==price_id))
+            price = price_query.one()
+            self.json(dict(price=price.to_dict()))
+        else:
+            self.json(dict(prices=[item.to_dict() for item in product.pricings]))
+
+    def post(self, product_id, *path_args, **kwargs):
+        product = self.db_session.query(models.Product).get(product_id)
+
+        try:
+            data = json.loads(self.request.body.decode("utf8"))
+            data["id"] = self.application.hashid()
+            data["created_at"] = datetime.utcnow()
+            data["product"] = product
+
+            price = models.Price(**data)
+            self.db_session.add(price)
+            self.db_session.commit()
+
+            self.json(dict(price=price.to_dict()))
+        except Exception as e:
+            self.db_session.rollback()
+            self.send_error(400, reason=str(e))
 
 
 class UnitsHandler(RequestHandler):
