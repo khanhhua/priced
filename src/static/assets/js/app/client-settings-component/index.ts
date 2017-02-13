@@ -9,6 +9,7 @@ import { Router }            from '@angular/router';
 
 import { Unit } from "../models";
 import { CreateUnitComponent } from '../create-unit-component/index';
+import { ViewUnitComponent } from '../view-unit-component/index';
 
 @Component({
   moduleId: module.id,
@@ -24,6 +25,7 @@ export class ClientSettingsComponent implements OnInit {
   };
 
   @ViewChild('createUnitModal') private createUnitModal:CreateUnitComponent;
+  @ViewChild('viewUnitModal') private viewUnitModal:ViewUnitComponent;
   constructor (private http: Http) {}
 
   ngOnInit () {
@@ -42,7 +44,7 @@ export class ClientSettingsComponent implements OnInit {
   viewUnit(unitId: string): void {
     console.log(`[viewUnit] Showing dialog for unit #${unitId}`);
 
-    this.createUnitModal.show();
+    this.viewUnitModal.show(unitId);
   }
 
   createUnit(): void {

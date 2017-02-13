@@ -7,6 +7,7 @@ py==1.4.32
 pyparsing==2.1.10
 pytest==3.0.6
 pytest-pythonpath==0.7.1
+pytest-tornado==0.4.5
 six==1.10.0
 SQLAlchemy==1.1.5
 tornado==4.4.2

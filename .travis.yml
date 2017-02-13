@@ -1,4 +1,6 @@
 language: python
+env:
+  - DB_URL=postgresql://postgres:postgres@localhost/priced
 python:
   - "3.4"
   # PyPy versions
@@ -6,8 +8,12 @@ python:
   # - "pypy"  # PyPy2 2.5.0
   # - "pypy3" # Pypy3 2.4.0
   # - "pypy-5.3.1"
+services:
+  - postgresql
 # command to install dependencies
 install:
   - pip install -r requirements.txt
+before_script:
+  - psql -c 'create database priced;' -U postgres
 # command to run tests
 script: pytest ./test

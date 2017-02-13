@@ -99,15 +99,32 @@ class ProductPricesHandler(RestHandler):
             self.send_error(400, reason=str(e))
 
 
-class UnitsHandler(RequestHandler):
+class UnitsHandler(RestHandler):
 
     def get(self, unit_id=None):
-        unit = dict(id="ID001",
-                    name="Kilogram")
         if unit_id:
-            self.write(json.dumps(dict(unit=unit)))
+            unit = self.db_session.query(models.Unit).get(unit_id)
+            
+            self.write(json.dumps(dict(unit=unit.to_dict())))
         else:
-            self.write(json.dumps(dict(units=[unit])))
+            unit_query = self.db_session.query(models.Unit)
+            
+            self.write(json.dumps(dict(units=[unit.to_dict() for unit in unit_query])))
+            
+    def post(self, *path_args, **kwargs):
+        try:
+            data = json.loads(self.request.body.decode("utf8"))
+            data["id"] = self.application.hashid()
+            data["created_at"] = datetime.utcnow()
+            
+            unit = models.Unit(**data)
+            self.db_session.add(unit)
+            self.db_session.commit()
+            
+            self.json(dict(unit=unit.to_dict()))
+        except Exception as e:
+            self.db_session.rollback()
+            self.send_error(400, reason=str(e))
 
 
 class TaxCodesHandler(RestHandler):
