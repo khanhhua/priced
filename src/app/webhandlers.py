@@ -149,20 +149,28 @@ class TaxCodesHandler(RestHandler):
 class ScenariosHandler(RestHandler):
 
     def get(self, scenario_id=None):
-        description = """
-        Banana      1kg
-        Orange      2kg
-        Apple       4kg
-        ====
-        Shipping
-        """.strip()
-
-        scenario = dict(id="ID001",
-                        description=description)
         if scenario_id:
-            self.write(json.dumps(dict(scenario=scenario)))
+            scenario = self.db_session.query(models.Scenario).get(scenario_id)
+            self.json(dict(scenario=scenario.to_dict()))
         else:
-            self.write(json.dumps(dict(scenarios=[scenario])))
+            scenario_query = self.db_session.query(models.Scenario)
+            self.json(dict(scenarios=[scenario.to_dict() for scenario in scenario_query]))
+            
+    def post(self, *path_args, **kwargs):
+        try:
+            data = json.loads(self.request.body.decode("utf8"))
+            
+            scenario = models.Scenario(**data)
+            scenario.id = self.application.hashid()
+            self.db_session.add(scenario)
+            self.db_session.commit()
+            
+            self.db_session.refresh(scenario)
+            
+            self.json(dict(scenario=scenario.to_dict()))
+        except Exception as e:
+            self.db_session.rollback()
+            self.send_error(400, reason=str(e))
 
 
 class ScenarioSessionsHandler(RestHandler):
