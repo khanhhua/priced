@@ -12,11 +12,11 @@ import { Unit } from '../models';
 
 @Component({
   moduleId: module.id,
-  selector: 'priced-create-unit',
+  selector: 'priced-view-unit',
   templateUrl: './template.html',
   styleUrls: [ './style.css' ]
 })
-export class CreateUnitComponent implements OnInit {
+export class ViewUnitComponent implements OnInit {
   @Input() name: string;
   @Input() shortForm: string;
   
@@ -29,14 +29,22 @@ export class CreateUnitComponent implements OnInit {
   constructor (private http: Http) {}
 
   ngOnInit () {
-
+    
   }
 
-  show():void {
-    this.name = '';
-    this.shortForm = '';
-
-    this.childModal.show();
+  show(unitId):void {
+    this.http.get(`/api/units/${unitId}`)
+        .map(res => {
+          const data = res.json();
+          return data.unit as Unit;
+        })
+        .subscribe(unit => {
+          this.unit = unit;
+          this.name = unit.name;
+          this.shortForm = unit.short_form;
+          
+          this.childModal.show();      
+        });
   }
 
   onSave():void {
@@ -48,9 +56,9 @@ export class CreateUnitComponent implements OnInit {
     console.debug(`Unit name:`, this.unit);
     console.groupEnd();
     
-    const { name, shortForm:short_form } = this.unit;
+    const { id, name, shortForm:short_form } = this.unit;
     
-    this.http.post(`/api/units`, { name, short_form})
+    this.http.post(`/api/units/${id}`, { name, short_form})
         .map(res => {
           const data = res.json();
           
@@ -62,8 +70,8 @@ export class CreateUnitComponent implements OnInit {
           this.childModal.hide();
         });
   }
-
-  onCancel():void {
+  
+  onClose():void {
     this.childModal.hide();
   }
 }
