@@ -2,7 +2,6 @@ import json
 from datetime import datetime
 
 from tornado.web import RequestHandler
-from tornado.template import Loader
 
 from app import models
 
@@ -129,13 +128,76 @@ class UnitsHandler(RestHandler):
 
 class TaxCodesHandler(RestHandler):
 
-    def get(self, taxcode_id=None):
+    def get(self, taxcode_id):
+        taxcode_body = """EACH item
+            TAX item
+        """
+
         taxcode = dict(id="ID001",
-                       title="Applie")
+                       created_at="2017-01-01T06:00:00Z",
+                       effective_at="2017-01-01T06:00:00Z",
+                       expired_at="2017-01-31T06:00:00Z",
+                       title="Apple",
+                       shared=True,
+                       body=taxcode_body)
         if taxcode_id:
             self.write(json.dumps(dict(taxcode=taxcode)))
         else:
             self.write(json.dumps(dict(taxcodes=[taxcode])))
+
+
+class ScenariosHandler(RestHandler):
+
+    def get(self, scenario_id=None):
+        if scenario_id:
+            scenario = self.db_session.query(models.Scenario).get(scenario_id)
+            self.json(dict(scenario=scenario.to_dict()))
+        else:
+            scenario_query = self.db_session.query(models.Scenario)
+            self.json(dict(scenarios=[scenario.to_dict() for scenario in scenario_query]))
+            
+    def post(self, *path_args, **kwargs):
+        try:
+            data = json.loads(self.request.body.decode("utf8"))
+            
+            scenario = models.Scenario(**data)
+            scenario.id = self.application.hashid()
+            self.db_session.add(scenario)
+            self.db_session.commit()
+            
+            self.db_session.refresh(scenario)
+            
+            self.json(dict(scenario=scenario.to_dict()))
+        except Exception as e:
+            self.db_session.rollback()
+            self.send_error(400, reason=str(e))
+
+
+class ScenarioSessionsHandler(RestHandler):
+
+    def post(self, *path_args, **kwargs):
+        body = self.request.body
+        data = json.loads(body.decode("utf8"))
+
+        self.write("\"ok\"")
+
+
+class TransactionsHandler(RestHandler):
+
+    def post(self, *path_args, **kwargs):
+        body = self.request.body
+        data = json.loads(body.decode("utf8"))
+
+        # Input data should contain
+        # 1. Lines of product purchased (quantity, unit)
+        # 2. Additional services
+        # 3. Dates of transaction
+        #
+        # Output data
+        # 1. Lines of product with quantity, price, unit
+        # 2. Total amount due with details about tax and price before tax
+
+        self.write("\"ok\"")
 
 
 class ClientsHandler(RequestHandler):

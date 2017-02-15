@@ -5,14 +5,13 @@ def test_instantiation():
 """
 [products]
 P001 Banana 1kg
-P002 Lemon 2kg
-P003 Orange 5kg
+P002 Orange 2kg
+P004 Lemon 4kg
 
 [services]
-S001 Shipping
+Shipping
 
 [dates]
-order = 2017-01-01T00:00:00Z
 """
     scenario = Scenario(id="ID001",
                         title="Simple Scenario",
@@ -22,7 +21,6 @@ order = 2017-01-01T00:00:00Z
     assert scenario.id == "ID001"
     assert scenario.title == "Simple Scenario"
     assert scenario.description == "Simple Description"
-    assert scenario.content == content
 
 
 def test_serialization():
@@ -30,14 +28,13 @@ def test_serialization():
 """
 [products]
 P001 Banana 1kg
-P002 Lemon 2kg
-P003 Orange 5kg
+P002 Orange 2kg
+P004 Lemon 4kg
 
 [services]
-S001 Shipping
+Shipping
 
 [dates]
-order = 2017-01-01T00:00:00Z
 """
     scenario = Scenario(id="ID001",
                         title="Simple Scenario",

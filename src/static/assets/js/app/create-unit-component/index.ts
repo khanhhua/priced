@@ -33,6 +33,9 @@ export class CreateUnitComponent implements OnInit {
   }
 
   show():void {
+    this.name = '';
+    this.shortForm = '';
+
     this.childModal.show();
   }
 
@@ -58,5 +61,9 @@ export class CreateUnitComponent implements OnInit {
           
           this.childModal.hide();
         });
+  }
+
+  onCancel():void {
+    this.childModal.hide();
   }
 }

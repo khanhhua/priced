@@ -1,0 +1,68 @@
+<div class="page-header">
+  <h1>Scenario List</h1>
+
+  <button class="btn btn-sm btn-primary" (click)="onShowNewScenarioModal()">Add Scenario</button>
+</div>
+
+<div class="row">
+  <div class="col-sm-12">
+    <table class="table">
+      <thead>
+      <tr>
+        <th>Title</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let scenario of scenarios">
+        <td>{{scenario.title}}</td>
+        <td>
+          <a [routerLink]="['/scenarios', scenario.id]">View</a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div bsModal #newScenarioModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-default">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">Create Scenario</h4>
+        <!--<button type="button" class="close pull-right" aria-label="Close" (click)="hideChildModal()">-->
+          <!--<span aria-hidden="true">&times;</span>-->
+        <!--</button>-->
+      </div>
+      <div *ngIf="newScenario" class="modal-body">
+        <div class="form form-horizontal">
+          <div class="form-group">
+            <label class="control-label col-xs-12 col-sm-3">Title</label>
+            <div class="col-xs-12 col-sm-9">
+              <input type="text" class="form-control" [(ngModel)]="newScenario.title">
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label class="control-label col-xs-12 col-sm-3">Description</label>
+            <div class="col-xs-12 col-sm-9">
+              <input type="text" class="form-control" [(ngModel)]="newScenario.description">
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label class="control-label col-xs-12 col-sm-3">Content</label>
+            <div class="col-xs-12 col-sm-9">
+              <textarea class="form-control" [(ngModel)]="newScenario.content">
+              </textarea>
+            </div>
+          </div>
+
+          <div class="form-group text-center">
+            <button class="btn btn-primary" (click)="onSaveNewScenario(newScenario)">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

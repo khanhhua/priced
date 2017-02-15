@@ -13,6 +13,8 @@ import { AlertModule, ModalModule } from 'ng2-bootstrap/ng2-bootstrap';
 import { AppComponent } from './app.component';
 import { ProductListComponent } from './product-list-component/index';
 import { ProductDetailComponent } from './product-detail-component/index';
+import { ScenarioListComponent } from './scenario-list-component/index';
+import { ScenarioDetailComponent } from './scenario-detail-component/index';
 import { TaxcodeListComponent } from './taxcode-list-component/index';
 import { TaxcodeDetailComponent } from './taxcode-detail-component/index';
 import { ClientSettingsComponent } from './client-settings-component/index';
@@ -37,7 +39,9 @@ import { ViewUnitComponent } from './view-unit-component/index';
     TaxcodeDetailComponent,
     ClientSettingsComponent,
     CreateUnitComponent,
-    ViewUnitComponent
+    ViewUnitComponent,
+    ScenarioListComponent,
+    ScenarioDetailComponent
   ],
   //providers: [ HeroService ],
   bootstrap: [ AppComponent ]

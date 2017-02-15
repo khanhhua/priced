@@ -5,6 +5,7 @@ from sqlalchemy import Column, Integer, String, CHAR, DateTime, Boolean, Foreign
 from sqlalchemy.orm import relationship
 
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.sql import func
 from sqlalchemy import Float
 Base = declarative_base()
 
@@ -73,3 +74,20 @@ class Unit(Serializable, Base):
     short_form = Column(String, nullable=False)
 
     created_at = Column(DateTime, nullable=False)
+    
+
+class Scenario(Serializable, Base):
+    """
+    Scenarios are client specific
+    Product code mentioned in scenario content is also client specific
+    """
+    __tablename__ = "scenarios"
+    __serializable__ = ["id", "title", "description", "content"]
+    
+    id = Column(CHAR(16), primary_key=True)
+    title = Column(String, nullable=False)
+    description = Column(String, nullable=False)
+    content = Column(String, nullable=False)
+    
+    created_at = Column(DateTime, nullable=False, default=func.now())
+    updated_at = Column(DateTime, nullable=False, default=func.now(), onupdate=func.now())
