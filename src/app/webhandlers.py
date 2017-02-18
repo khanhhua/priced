@@ -128,23 +128,29 @@ class UnitsHandler(RestHandler):
 
 class TaxCodesHandler(RestHandler):
 
-    def get(self, taxcode_id):
-        taxcode_body = """EACH item
-            TAX item
-        """
-
-        taxcode = dict(id="ID001",
-                       created_at="2017-01-01T06:00:00Z",
-                       effective_at="2017-01-01T06:00:00Z",
-                       expired_at="2017-01-31T06:00:00Z",
-                       title="Apple",
-                       shared=True,
-                       body=taxcode_body)
+    def get(self, taxcode_id=None):
         if taxcode_id:
-            self.write(json.dumps(dict(taxcode=taxcode)))
+            taxcode = self.db_session.query(models.Taxcode).get(taxcode_id)
+            self.json(dict(taxcode=taxcode.to_dict()))
         else:
-            self.write(json.dumps(dict(taxcodes=[taxcode])))
+            taxcode_query = self.db_session.query(models.Taxcode)
+            self.json(dict(taxcodes=[item.to_dict() for item in taxcode_query]))
 
+    def post(self, *path_args, **kwargs):
+        try:
+            data = json.loads(self.request.body.decode("utf8"))
+            taxcode = models.Taxcode(**data)
+            taxcode.id = self.application.hashid()
+            
+            self.db_session.add(taxcode)
+            self.db_session.commit()
+            self.db_session.refresh(taxcode)
+            
+            self.json(dict(taxcode=taxcode.to_dict()))
+        except Exception as e:
+            self.db_session.rollback()
+            self.send_error(400, reason=str(e))
+            
 
 class ScenariosHandler(RestHandler):
 
