@@ -91,3 +91,21 @@ class Scenario(Serializable, Base):
     
     created_at = Column(DateTime, nullable=False, default=func.now())
     updated_at = Column(DateTime, nullable=False, default=func.now(), onupdate=func.now())
+
+
+class Taxcode(Serializable, Base):
+    """
+    Taxcode to be executed per product purchased
+    """
+    __tablename__ = "taxcodes"
+    __serializable__ = ["id", "title", "effective_at", "expired_at", "shared", "body", "created_at", "updated_at"]
+    
+    id = Column(CHAR(16), primary_key=True)
+    title = Column(String, nullable=False)    
+    effective_at = Column(DateTime, nullable=False)
+    expired_at = Column(DateTime, nullable=False)
+    shared = Column(Boolean, nullable=False)
+    body = Column(String, nullable=False)
+    
+    created_at = Column(DateTime, nullable=False, default=func.now())
+    updated_at = Column(DateTime, nullable=False, default=func.now(), onupdate=func.now())
