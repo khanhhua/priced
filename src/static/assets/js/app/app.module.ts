@@ -15,6 +15,7 @@ import { ProductListComponent } from './product-list-component/index';
 import { ProductDetailComponent } from './product-detail-component/index';
 import { ScenarioListComponent } from './scenario-list-component/index';
 import { ScenarioDetailComponent } from './scenario-detail-component/index';
+import { CreateTaxcodeComponent } from './create-taxcode-component/index';
 import { TaxcodeListComponent } from './taxcode-list-component/index';
 import { TaxcodeDetailComponent } from './taxcode-detail-component/index';
 import { ClientSettingsComponent } from './client-settings-component/index';
@@ -37,6 +38,7 @@ import { ViewUnitComponent } from './view-unit-component/index';
     ProductDetailComponent,
     TaxcodeListComponent,
     TaxcodeDetailComponent,
+    CreateTaxcodeComponent,
     ClientSettingsComponent,
     CreateUnitComponent,
     ViewUnitComponent,

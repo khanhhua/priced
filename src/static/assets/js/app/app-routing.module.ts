@@ -7,6 +7,7 @@ import { ScenarioListComponent } from './scenario-list-component/index';
 import { ScenarioDetailComponent } from './scenario-detail-component/index';
 import { TaxcodeListComponent } from './taxcode-list-component/index';
 import { TaxcodeDetailComponent } from './taxcode-detail-component/index';
+import { CreateTaxcodeComponent } from './create-taxcode-component/index';
 import { ClientSettingsComponent } from './client-settings-component/index';
 
 const routes: Routes = [
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: 'scenarios', component: ScenarioListComponent },
   { path: 'scenarios/:id', component: ScenarioDetailComponent },
   { path: 'taxcodes', component: TaxcodeListComponent },
+  { path: 'taxcodes/new', component: CreateTaxcodeComponent },
   { path: 'taxcodes/:id', component: TaxcodeDetailComponent },
   { path: 'settings', component: ClientSettingsComponent }
 ];

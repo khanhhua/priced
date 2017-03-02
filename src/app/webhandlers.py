@@ -141,6 +141,7 @@ class TaxCodesHandler(RestHandler):
             data = json.loads(self.request.body.decode("utf8"))
             taxcode = models.Taxcode(**data)
             taxcode.id = self.application.hashid()
+            taxcode.shared = False
             
             self.db_session.add(taxcode)
             self.db_session.commit()
